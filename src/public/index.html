@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="/" />
+  <title>Tiles</title>
+</head>
+
+<body>
+  <header>
+    <div class="title">Tiles</div>
+  </header>
+  <main>
+    <div class="menu">
+      <div class="menu-item">
+        <label for="height">По вертикали:</label>
+        <input type="number" id="height" value="8" min="8" max="20" />
+      </div>
+      <div class="menu-item">
+        <label for="width">По горизонтали:</label>
+        <input type="number" id="width" value="8" min="8" max="20" />
+      </div>
+      <div class="menu-item">
+        <label for="strategy">Стратегия:</label>
+        <select name="" id="strategy">
+          <option value="top">Сверху</option>
+          <option value="right">Справа</option>
+        </select>
+      </div>
+      <button class="btn" onclick="window.render('home')">Новая игра</button>
+    </div>
+    <div class="field" id="field"></div>
+  </main>
+  <script src="config.js"></script>
+</body>
+
+</html>
