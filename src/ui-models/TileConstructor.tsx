@@ -1,5 +1,6 @@
-import { IEngine, TileEngine } from "../business-models/IEngine"
+import { IEngine } from "../business-models/IEngine"
 import { ITile } from "../business-models/ITile"
+import { TileEngine } from "../business-models/TileEngine"
 import { IConstructor } from "./IConstructor"
 
 /**
@@ -46,6 +47,22 @@ export class TileConstructor implements IConstructor {
     this.engine = new TileEngine(this.rootWidth, this.rootHeight)
     this.engine.alterStrategy(strategySelect.value)
     this.tileSet = this.engine.tileSet
+
+    // добавление кнопки перемешивания поля
+    let btn = document.getElementById("shuffle") as HTMLButtonElement
+    !btn && (btn = document.createElement("button"))
+    btn.style.display = "flex"
+    btn.id = "shuffle"
+    btn.className = "btn"
+    btn.textContent = `Перемешать: ${this.engine.numShuffles}`
+    btn.onclick = _ => {
+      this.tileSet = this.engine.shuffle()
+      btn.textContent = `Перемешать: ${this.engine.numShuffles}`
+      this.engine.numShuffles == 0 && (btn.style.display = "none")
+      this.render()
+    }
+    const menu = document.querySelector(".menu") as HTMLDivElement
+    menu.appendChild(btn)
   }
 
 

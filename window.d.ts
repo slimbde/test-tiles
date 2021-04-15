@@ -7,5 +7,6 @@ declare global {
     tileSize: number              // размер плиток
     attempts: number              // количество ходов
     goalPoints: number            // количество необходимых очков
+    shuffles: number              // доступное количество перемешиваний по умолчанию
   }
 }

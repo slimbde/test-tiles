@@ -12,3 +12,4 @@ window.tileColors = [
 window.tileSize = 50
 window.attempts = 10
 window.goalPoints = 1100
+window.shuffles = 3
