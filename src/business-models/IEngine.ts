@@ -18,6 +18,7 @@ export interface IEngine {
 
   burn(left: number, top: number): ITile[][]    // сжечь прилежащие плитки в точке
   fill(): ITile[][]                             // заполнить пустые плитки
+  alterStrategy(name: string): void             // метод изменения стратегии заполнения плиток
 }
 
 
@@ -28,7 +29,7 @@ export interface IEngine {
  */
 export class TileEngine implements IEngine {
   private tileFactory: IFactory<ITile> = new TileFactory()    // плиточная фабрика
-  private strategy: IFillStrategy = new RightFillStrategy()     // стратегия смещения плиток
+  private strategy: IFillStrategy                             // стратегия смещения плиток
   private currentColor: string                                // текущий сжигаемый цвет
 
   public attempts: number                                     // счетчик доступных ходов
@@ -40,6 +41,9 @@ export class TileEngine implements IEngine {
 
   // инициализация класса
   constructor(width: number, height: number) {
+    // инициализация стратегии заполнения плиток
+    this.strategy = new TopFillStrategy()
+
     // инициализация игровых переменных
     this.attempts = window.attempts
     this.goalPoints = window.goalPoints
@@ -86,6 +90,20 @@ export class TileEngine implements IEngine {
   fill(): ITile[][] {
     this.tileSet = this.strategy.fill(this.tileSet)
     return this.tileSet
+  }
+
+
+  /**
+   * изменить стратегию заполнения
+   * @param name имя выбранной стратегии заполнения плиток
+   */
+  alterStrategy(name: string): void {
+    switch (name) {
+      case "Сверху": this.strategy = new TopFillStrategy(); break
+      case "Справа": this.strategy = new RightFillStrategy(); break
+
+      default: break
+    }
   }
 
 

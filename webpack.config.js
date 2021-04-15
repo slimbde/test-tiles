@@ -41,7 +41,7 @@ module.exports = {
   },
   optimization: optimization(),
   devServer: {
-    port: 2500,
+    port: 2600,
     contentBase: path.resolve(__dirname, "dist"),
     compress: true,
   },

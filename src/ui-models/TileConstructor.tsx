@@ -6,27 +6,26 @@ import { IConstructor } from "./IConstructor"
  * Конкретная реализация - плиточный конструктор
  */
 export class TileConstructor implements IConstructor {
-  private engine: IEngine       // игровой движок приложения
-  private tileSet: ITile[][]    // активный набор приток
-  private root: HTMLDivElement  // поле для отрисовки плиток
-  private rootWidth: number     // ширина поля
-  private rootHeight: number    // высота поля
+  private engine: IEngine           // игровой движок приложения
+  private tileSet: ITile[][]        // активный набор приток
+  private root: HTMLDivElement      // поле для отрисовки плиток
+  private rootWidth: number         // ширина поля
+  private rootHeight: number        // высота поля
   private scores: HTMLDivElement
 
 
   constructor() {
+    // скрываем картинки конца игры и победы
     (document.querySelector(".game-over") as HTMLDivElement).style.opacity = "0";
     (document.querySelector(".victory") as HTMLDivElement).style.opacity = "0"
 
-    this.rootWidth = parseInt((document.getElementById("width") as HTMLInputElement).value)
-    this.rootHeight = parseInt((document.getElementById("height") as HTMLInputElement).value)
     this.scores = document.querySelector(".scores") as HTMLDivElement
     this.scores.classList.remove("good-scores")
     this.scores.classList.remove("fail-scores")
 
-    this.engine = new TileEngine(this.rootWidth, this.rootHeight)
-    this.tileSet = this.engine.tileSet
-
+    // инициализация поля для плиток
+    this.rootWidth = parseInt((document.getElementById("width") as HTMLInputElement).value)
+    this.rootHeight = parseInt((document.getElementById("height") as HTMLInputElement).value)
     this.root = document.getElementById("field") as HTMLDivElement
     this.root.style.width = `calc(${this.rootWidth}px * ${window.tileSize} + 2rem + 2px)`
     this.root.style.height = `calc(${this.rootHeight}px * ${window.tileSize} + 2rem + 2px)`
@@ -37,6 +36,16 @@ export class TileConstructor implements IConstructor {
       this.root.style.opacity = "1"
       this.root.style.display = "flex"
     }, 500)
+
+    // инициализация селекта с выбором стратегий
+    const strategySelect = document.getElementById("strategy") as HTMLSelectElement
+    strategySelect.onchange = (e: any) => this.engine.alterStrategy(e.target.value)
+    strategySelect.style.cursor = "pointer"
+
+    // инициализация движка 
+    this.engine = new TileEngine(this.rootWidth, this.rootHeight)
+    this.engine.alterStrategy(strategySelect.value)
+    this.tileSet = this.engine.tileSet
   }
 
 
