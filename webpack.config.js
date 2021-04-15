@@ -44,15 +44,6 @@ module.exports = {
     port: 2500,
     contentBase: path.resolve(__dirname, "dist"),
     compress: true,
-    proxy: {                                      // to enable proxying install 'http-proxy-middleware'
-      "/php-api": {                               // what to substitute
-        target: "http://php-rest-api",            // where to redirect
-        secure: false,                            // disable https
-        changeOrigin: true,                       // on an other server
-        //pathRewrite: { "^/php-api": "" }        // clear 'php-api' from request string
-      }
-    }
-    //hot: isDev, - this should be disabled. Otherwise html page doesn't refresh
   },
   devtool: isDev ? 'eval-cheap-source-map' : false, // disable source-maps at production
   plugins: [

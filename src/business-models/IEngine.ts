@@ -1,5 +1,6 @@
 import { IFactory, TileFactory } from "./IFactory";
 import { TopFillStrategy } from "./TopFillStrategy";
+import { RightFillStrategy } from "./RightFillStrategy";
 import { IFillStrategy } from "./IFillStrategy";
 import { ITile } from "./ITile";
 
@@ -27,7 +28,7 @@ export interface IEngine {
  */
 export class TileEngine implements IEngine {
   private tileFactory: IFactory<ITile> = new TileFactory()    // плиточная фабрика
-  private strategy: IFillStrategy = new TopFillStrategy()     // стратегия смещения плиток
+  private strategy: IFillStrategy = new RightFillStrategy()     // стратегия смещения плиток
   private currentColor: string                                // текущий сжигаемый цвет
 
   public attempts: number                                     // счетчик доступных ходов
