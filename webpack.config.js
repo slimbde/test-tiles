@@ -62,6 +62,8 @@ module.exports = {
       patterns: [
         { from: "./public/favicon.ico" },
         { from: "./public/config.js" },
+        { from: "./public/game-over.gif" },
+        { from: "./public/victory.gif" },
       ]
     }),
     new MiniCssExtractPlugin({ filename: filename(`css`) }),

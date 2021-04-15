@@ -15,9 +15,14 @@ export class TileConstructor implements IConstructor {
 
 
   constructor() {
+    (document.querySelector(".game-over") as HTMLDivElement).style.opacity = "0";
+    (document.querySelector(".victory") as HTMLDivElement).style.opacity = "0"
+
     this.rootWidth = parseInt((document.getElementById("width") as HTMLInputElement).value)
     this.rootHeight = parseInt((document.getElementById("height") as HTMLInputElement).value)
     this.scores = document.querySelector(".scores") as HTMLDivElement
+    this.scores.classList.remove("good-scores")
+    this.scores.classList.remove("fail-scores")
 
     this.engine = new TileEngine(this.rootWidth, this.rootHeight)
     this.tileSet = this.engine.tileSet
@@ -25,6 +30,13 @@ export class TileConstructor implements IConstructor {
     this.root = document.getElementById("field") as HTMLDivElement
     this.root.style.width = `calc(${this.rootWidth}px * ${window.tileSize} + 2rem + 2px)`
     this.root.style.height = `calc(${this.rootHeight}px * ${window.tileSize} + 2rem + 2px)`
+
+    this.root.style.opacity = "0"
+
+    setTimeout(_ => {
+      this.root.style.opacity = "1"
+      this.root.style.display = "flex"
+    }, 500)
   }
 
 
@@ -34,19 +46,6 @@ export class TileConstructor implements IConstructor {
    */
   public render(): void {
     this.scores.innerHTML = `Попыток: ${this.engine.attempts}&nbsp;&nbsp;&nbsp; Очки: ${this.engine.userPoints} &nbsp;&nbsp;&nbsp; Необходимо набрать: ${this.engine.goalPoints}`
-
-    if (this.engine.gameStatus === "victory") {
-      this.scores.classList.add("good-scores")
-      window.render("victory")
-      return
-    }
-
-    if (this.engine.gameStatus === "game-over") {
-      this.scores.classList.add("fail-scores")
-      window.render("game-over")
-      return
-    }
-
 
     this.root.style.opacity = "1"
     this.root.innerHTML = ""
@@ -65,10 +64,26 @@ export class TileConstructor implements IConstructor {
 
         tile.onclick = _ => {
           this.tileSet = this.engine.burn(left, top)
+
           setTimeout(_ => {
             this.render()
             this.tileSet = this.engine.fill()
-            setTimeout(_ => this.render(), 1000)
+
+            setTimeout(_ => {
+              if (this.engine.gameStatus === "victory") {
+                this.scores.classList.add("good-scores")
+                window.render("victory")
+                return
+              }
+
+              if (this.engine.gameStatus === "game-over") {
+                this.scores.classList.add("fail-scores")
+                window.render("game-over")
+                return
+              }
+
+              this.render()
+            }, 1000)
           }, 100)
         }
 

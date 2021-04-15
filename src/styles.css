@@ -214,3 +214,10 @@ main {
   /*filter: brightness(50%);*/
   animation: blinker .5s linear infinite;
 }
+
+.game-over, .victory {
+  opacity: 0;
+  position: absolute;
+  left: 250px;
+  z-index: -1;
+}
