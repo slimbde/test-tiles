@@ -47,6 +47,7 @@ input {
   border: 1px solid rgba(211, 211, 211, 0.411);
   padding: .3rem .5rem;
   margin-left: 0.5rem;
+  max-width: 60px;
   box-shadow: 0 0 10px rgba(245, 245, 245, 0.808) inset;
   transition: box-shadow 0.3s ease-in-out;
 }
