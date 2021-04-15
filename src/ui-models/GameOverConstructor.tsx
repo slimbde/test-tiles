@@ -12,7 +12,7 @@ export class GameOverConstructor implements IConstructor {
   public render(): void {
     const root = document.getElementById("field") as HTMLDivElement
     root.style.opacity = "0"
-    root.style.visibility = "false"
+    root.style.display = "none"
 
     const gameOver = document.querySelector(".game-over") as HTMLDivElement
     gameOver.style.opacity = "1"

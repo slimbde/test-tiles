@@ -153,6 +153,8 @@ export class TileEngine implements IEngine {
       if (this.userPoints >= this.goalPoints)
         this.gameStatus = "victory"
     }
+    else if (this.userPoints >= this.goalPoints)
+      this.gameStatus = "victory"
     else
       this.gameStatus = "game-over"
   }
