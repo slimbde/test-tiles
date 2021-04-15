@@ -1,26 +1,9 @@
-# Site features
+# ПЛИТКИ
 
-## To push the dist folder to the separate branch on remote
-```
-git push -d origin gh-pages
-git subtree push --prefix dist origin gh-pages
-```
-However, when you run git-pages (on `https`) you are not allowed to load data from `http` sources..
-
-## Window object overriding
-**window.d.ts**
-```typescript
-declare global {
-  interface Window {
-    construct: IConstructor
-    db: IDbHandler
-    render(what: string): void
-    toggleMenu(): void
-    hideMenu(): void
-  }
-}
-```
-
-## IE ADAPTATION
-- IE doesn't allow `div.append( )` method. Use **`div.appendChild()`** instead
-- IE doesn't allow `Array.find( )` method. Use **`Array.filter( )[0]`** instead
+- Использован Webpack + Babel + Typescript
+- Имеется файл конфига для настроек приложения без перекомпиляции `public/config.js`
+- Бизнес-логика сосредоточена в папке `business-models`
+- Логика отрисовки вынесена в отдельные классы в папке `ui-models`
+- Логика заполнения плиток реализована в классах `TopFillStrategy и RightFillStrategy` реализующих интерфейс `IFillStrategy`
+- Класс `Engine` открыт для расширения в сторону разных логик заполнения плиток - паттерн *Стратегия*
+- Конкретные реализации плиток отделены от использующих сущностей интерфейсом `ITile` при использовании паттерна *Абстрактная фабрика*

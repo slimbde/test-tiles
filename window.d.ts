@@ -6,5 +6,7 @@ declare global {
     render(what: string): void
     tileColors: string[]
     tileSize: number
+    attempts: number
+    goalPoints: number
   }
 }

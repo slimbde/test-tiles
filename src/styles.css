@@ -98,15 +98,19 @@ hr {
 
 header {
   position: relative;
-  margin: auto;
+  display: flex;
+  justify-content: center;
   height: 50px;
   width: 100%;
   background-color: aliceblue;
   border-bottom: 1px solid lightgray;
   z-index: 10;
-  padding-right: 0.5rem;
-  text-align: center;
-  vertical-align: baseline;
+}
+
+.header-wrapper {
+  display: flex;
+  max-width: 1600px;
+  width: 100%;
 }
 
 main {
@@ -126,14 +130,34 @@ main {
 
 .title {
   display: flex;
-  margin: auto;
   max-width: 1600px;
   height: 100%;
   align-items: center;
   padding-left: 255px;
-  color: gray;
+  color: rgba(128, 128, 128, 0.493);
   font-size: 1.5rem;
   text-transform: uppercase;
+}
+
+.scores {
+  display: flex;
+  font-weight: 300;
+  font-size: 1rem;
+  text-transform: uppercase;
+  align-items: center;
+  margin-left: 2rem;
+  padding-top: .4rem;
+  color: darkslategray;
+}
+
+.good-scores {
+  color: green;
+  text-shadow: 0 0 10px lightgreen;
+}
+
+.fail-scores {
+  color: red;
+  text-shadow: 0 0 10px coral;
 }
 
 .menu {
@@ -144,7 +168,7 @@ main {
   flex-flow: column;
   padding: 1rem;
   align-items: flex-end;
-  border-right: 1px solid lightgray;
+  /*border-right: 1px solid lightgray;*/
 }
 
 .menu-item {
@@ -154,10 +178,6 @@ main {
   align-items: baseline;
   margin-bottom: 0.5rem;
 }
-
-/*.menu-item:hover {
-  background-color: aliceblue;
-}*/
 
 .field {
   display: flex;

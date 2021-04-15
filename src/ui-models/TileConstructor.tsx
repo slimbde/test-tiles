@@ -11,11 +11,13 @@ export class TileConstructor implements IConstructor {
   private root: HTMLDivElement  // поле для отрисовки плиток
   private rootWidth: number     // ширина поля
   private rootHeight: number    // высота поля
+  private scores: HTMLDivElement
 
 
   constructor() {
     this.rootWidth = parseInt((document.getElementById("width") as HTMLInputElement).value)
     this.rootHeight = parseInt((document.getElementById("height") as HTMLInputElement).value)
+    this.scores = document.querySelector(".scores") as HTMLDivElement
 
     this.engine = new TileEngine(this.rootWidth, this.rootHeight)
     this.tileSet = this.engine.tileSet
@@ -28,11 +30,25 @@ export class TileConstructor implements IConstructor {
 
   /**
    * реализация интерфейса
-   * рисует текущий набор плиток в поле
+   * рисует текущее состояние игры
    */
   public render(): void {
-    this.root.style.opacity = "1"
+    this.scores.innerHTML = `Попыток: ${this.engine.attempts}&nbsp;&nbsp;&nbsp; Очки: ${this.engine.userPoints} &nbsp;&nbsp;&nbsp; Необходимо набрать: ${this.engine.goalPoints}`
 
+    if (this.engine.gameStatus === "victory") {
+      this.scores.classList.add("good-scores")
+      window.render("victory")
+      return
+    }
+
+    if (this.engine.gameStatus === "game-over") {
+      this.scores.classList.add("fail-scores")
+      window.render("game-over")
+      return
+    }
+
+
+    this.root.style.opacity = "1"
     this.root.innerHTML = ""
     const offset = 15;
 

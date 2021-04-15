@@ -10,6 +10,11 @@ import { ITile } from "./ITile";
  */
 export interface IEngine {
   tileSet: ITile[][]                            // текущий набор плиток
+  attempts: number                              // счетчик доступных ходов
+  goalPoints: number                            // необходимое количество очков
+  userPoints: number                            // набранное количество очков       
+  gameStatus: string                            // статус игрового процесса
+
   burn(left: number, top: number): ITile[][]    // сжечь прилежащие плитки в точке
   fill(): ITile[][]                             // заполнить пустые плитки
 }
@@ -25,13 +30,24 @@ export class TileEngine implements IEngine {
   private strategy: IFillStrategy = new TopFillStrategy()     // стратегия смещения плиток
   private currentColor: string                                // текущий сжигаемый цвет
 
+  public attempts: number                                     // счетчик доступных ходов
+  public goalPoints: number                                   // необходимое количество очков
+  public userPoints: number                                   // набранное количество очков
   public tileSet: ITile[][]                                   // текущий набор плиток
+  public gameStatus: string                                   // статус игрового процесса
 
 
-  // инициализация набора плиток
+  // инициализация класса
   constructor(width: number, height: number) {
+    // инициализация игровых переменных
+    this.attempts = window.attempts
+    this.goalPoints = window.goalPoints
+    this.userPoints = 0
+    this.gameStatus = "playing"
+
     this.tileSet = []
 
+    // генерация нового массива плиток
     for (let left = 0; left < width; ++left) {
       this.tileSet[left] = []
 
@@ -51,8 +67,15 @@ export class TileEngine implements IEngine {
    * @param top координата Y
    */
   burn(left: number, top: number): ITile[][] {
+    --this.attempts           // уменьшаем счетчик доступных ходов
+
     this.currentColor = this.tileSet[left][top].color
     this.killAdjacent(left, top)
+
+    // выставляем текущий статус игрового процесса
+    // тут может быть логика. Для упрощения вынесено в функцию
+    this.calculateGameStatus()
+
     return this.tileSet
   }
 
@@ -74,7 +97,8 @@ export class TileEngine implements IEngine {
    */
   private killAdjacent(left: number, top: number): void {
     const baseCell = this.tileSet[left][top]
-    baseCell.dead = true
+    baseCell.dead = true    // убиваем нажатую плитку
+    this.userPoints += 100  // начисляем очки за убитую плитку
 
     //this.tryKill(left - 1, top - 1)
     //this.tryKill(left + 1, top - 1)
@@ -96,9 +120,10 @@ export class TileEngine implements IEngine {
     if (this.validPoint(left, top)) {
       const current = this.tileSet[left][top]
 
-      if (current.dead)
+      if (current.dead) // если плитка уже мертва - выходим
         return
 
+      // если текущая нужного цвета - убиваем плитку и рекурсивно проверяем смежные
       if (current.color === this.currentColor) {
         current.dead = true
         this.killAdjacent(current.left, current.top)
@@ -117,5 +142,18 @@ export class TileEngine implements IEngine {
       && left >= 0
       && top >= 0
       && top < this.tileSet[0].length
+  }
+
+
+  /**
+   * рассчет статуса игрового процесса
+   */
+  calculateGameStatus(): void {
+    if (this.attempts > 0) {
+      if (this.userPoints >= this.goalPoints)
+        this.gameStatus = "victory"
+    }
+    else
+      this.gameStatus = "game-over"
   }
 }
